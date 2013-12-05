@@ -18,6 +18,19 @@
 
 volatile char buffer[PACKET_LENGTH]={0};
 volatile int play=0; //1=PLAY| 0=PAUSE
+unsigned int star[12]={0};
+int i, j, k =0;
+int maxD, minD, dist, p, q, r, s=0; // p.q.r.s -> co-ordinates between which the midpoint is to be found(x2, x4)[p.q.r.s=x2.y2.x4.y4]
+int cx, cy, cxx, cyy, cX, cY=0;
+int count=0;
+int pmax, qmax, rmax, smax, pmin, qmin, rmin, smin, pp, qq, rr, ss=0;
+float theta=0;
+float to_angle, to_angle_1, to_angle_2, to_angle_c=0;
+float temp1=0;
+float LESS2=0;
+float temp_theta=0;
+int trans_c,trans_fl,trans_fr,trans_bl,trans_br=0;
+int puck_in_hand, puck_in_line=0;
 
 /*
 m_red() - ON when 2 or more stars have been lost. OFF otherwise
@@ -38,19 +51,7 @@ int main(void)
 	m_rf_open(CHANNEL, RXADD, PACKET_LENGTH);  // Configure the RF module to listen on CHANNEL for RXADD
 	sei(); //Enable global interrupt
 	
-	unsigned int star[12]={0};
-    int i, j, k =0;
-    int maxD, minD, dist, p, q, r, s=0; // p.q.r.s -> co-ordinates between which the midpoint is to be found(x2, x4)[p.q.r.s=x2.y2.x4.y4]
-    int cx, cy, cxx, cyy, cX, cY=0; 
-	int count=0;
-    int pmax, qmax, rmax, smax, pmin, qmin, rmin, smin, pp, qq, rr, ss=0;
-    float theta=0;
-    float to_angle, to_angle_1, to_angle_2, to_angle_c=0;
-    float temp1=0;
-	float LESS2=0;
-	float temp_theta=0;
-	int trans_c,trans_fl,trans_fr,trans_bl,trans_br=0; 
-	int puck_in_hand, puck_in_line=0;
+	
 	
     set(DDRD,7);    // Set as Comm test Led output
 	set(DDRD,6);    // Set as PAUSE Led output
@@ -80,7 +81,7 @@ int main(void)
 	  set(DDRB, 7); // Set (Reg B. Bit 7) as timer output. PWM 2
  }
  
- void read m_wii()
+ void read_mwii()
  {   cli();
 	 m_wii_read(star);
 	 sei();
@@ -117,9 +118,10 @@ int main(void)
 		
 			}
 	
-		}
+	}
 		
- }
+ 
+ 
  void timer_init()
  {     //Timer Initialization
 	 set(DDRB, 6); // Set (Reg B. Bit 6) as timer output. PWM 1
@@ -277,6 +279,7 @@ void localize()
 			 }
 			 */
 	theta=-theta;
+				}
 	else //If more than 1 star has been lost:
 	{
 		m_red(ON);
