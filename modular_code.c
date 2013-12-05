@@ -63,9 +63,7 @@ int main(void)
 			pause_robot();
 		}
 		clear(PORTD,6); //Switch OFF RED LED
-	
-		
-		//Localization of bot w.r.t constellation
+	   
 		read_mwii();
         localize();
 	    locate_puck();
@@ -116,9 +114,9 @@ int main(void)
 				
 			}
 		
-			}
+		}
 	
-	}
+}
 		
  
  
@@ -201,6 +199,8 @@ int main(void)
  }
 void localize()
 { 		
+	
+       //Localization of bot w.r.t constellation
 	    count=0;
 	   //Reading no. of detectable stars
 		for(k=0;k<=3;++k)
